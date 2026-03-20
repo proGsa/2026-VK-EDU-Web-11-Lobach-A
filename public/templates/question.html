@@ -1,0 +1,184 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block auth %}
+<img src="{% static 'img/avatar.jpg' %}" alt="avatar" height="70" class="rounded-circle">
+<div class="d-flex flex-column">
+    <span class="fw-bold">proGsa2026</span>
+    <div>
+        <a href="#" class="text-decoration-none small me-2">Профиль</a>
+        <a href="#" class="text-decoration-none small text-danger">Выйти</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block left %}
+<div class="col-12 col-md-7 col-lg-8 d-flex flex-column gap-3">
+    <div class="qa-block p-3">
+        <div class="qa-avatar">
+            
+            <img src="{% static 'img/avatar1.png' %}" class="rounded-circle">
+            <div class="likes">
+                <button class="btn btn-sm btn-outline-success">+</button>
+                <span>123</span>
+                <button class="btn btn-sm btn-outline-danger">-</button>
+            </div>
+        </div>
+    
+        <div class="qa-content">
+            <h4 class="mb-3">
+                Как работает Django ORM?
+            </h4>
+    
+            <p>
+                Пытаюсь разобраться, как правильно использовать ORM в Django.
+                Особенно интересует работа с select_related и prefetch_related,
+                а также оптимизация запросов. Приведите примеры.
+            </p>
+    
+            <div class="qa-bottom d-flex justify-content-between align-items-center mt-3">
+                <span class="text-muted small">10 минут назад</span>
+    
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-muted small tag-label">Тэги:</span>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="tag-link">django</a>
+                        <a href="#" class="tag-link">python</a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="qa-block p-3">
+        <div class="qa-avatar">
+            <img src="{% static 'img/avatar4.jpg' %}" class="rounded-circle">
+            <div class="likes">
+                <button class="btn btn-sm btn-outline-success">+</button>
+                <span>56</span>
+                <button class="btn btn-sm btn-outline-danger">-</button>
+            </div>
+        </div>
+
+        <div class="qa-content">
+            <p>
+                <b>select_related</b> используется для связей "один-к-одному" и "многие-к-одному".
+                Он делает SQL JOIN и вытаскивает данные одним запросом.
+            </p>
+    
+            <pre class="bg-light p-2 rounded small">
+                posts = Post.objects.select_related('author')
+                for post in posts:
+                    print(post.author.username)
+            </pre>
+    
+            <p class="mb-0">
+                Без select_related здесь был бы отдельный запрос для каждого автора.
+            </p>
+
+            <div class="qa-bottom d-flex justify-content-between align-items-center mt-2">
+                <span class="text-muted small">9 минут назад</span>
+                <button class="btn btn-sm btn-outline-success mark-btn">
+                    <span class="checkmark">✔</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="qa-block p-3">
+        <div class="qa-avatar">
+            <img src="{% static 'img/avatar5.jpg' %}" class="rounded-circle">
+            <div class="likes">
+                <button class="btn btn-sm btn-outline-success">+</button>
+                <span>34</span>
+                <button class="btn btn-sm btn-outline-danger">-</button>
+            </div>
+        </div>
+    
+        <div class="qa-content">
+            <p>
+                <b>prefetch_related</b> используется для "многие-ко-многим" и обратных связей.
+                Он делает несколько запросов, но потом объединяет их в Python.
+            </p>
+    
+            <pre class="bg-light p-2 rounded small">
+            authors = Author.objects.prefetch_related('posts')
+            for author in authors:
+                for post in author.posts.all():
+                    print(post.title)
+            </pre>
+    
+            <p class="mb-0">
+                Это предотвращает N+1 проблему при работе с коллекциями.
+            </p>
+    
+            <div class="qa-bottom d-flex justify-content-between align-items-center mt-2">
+                <span class="text-muted small">7 минут назад</span>
+                <button class="btn btn-sm btn-outline-success mark-btn">
+                    <span class="checkmark">✔</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="qa-block p-3">
+        <div class="qa-avatar">
+            <img src="{% static 'img/avatar6.jpeg' %}" class="rounded-circle">
+            <div class="likes">
+                <button class="btn btn-sm btn-outline-success">+</button>
+                <span>78</span>
+                <button class="btn btn-sm btn-outline-danger">-</button>
+            </div>
+        </div>
+    
+        <div class="qa-content">
+            <p>
+                Общее правило:
+            </p>
+    
+            <ul class="mb-2">
+                <li><b>select_related</b> → когда нужен JOIN (ForeignKey, OneToOne)</li>
+                <li><b>prefetch_related</b> → когда список объектов (ManyToMany, reverse FK)</li>
+            </ul>
+    
+            <p class="mb-0">
+                Часто их используют вместе для максимальной оптимизации.
+            </p>
+    
+            <div class="qa-bottom d-flex justify-content-between align-items-center mt-2">
+                <span class="text-muted small">3 минуты назад</span>
+                <button class="btn btn-sm btn-outline-success mark-btn active">
+                    <span class="checkmark">✔</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <hr class="my-4">
+
+    <h5 class="mb-3">Ваш ответ</h5>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Поле ввода -->
+        <div class="mb-3">
+            <textarea name="text"
+                    class="form-control"
+                    rows="6"
+                    placeholder="Enter your answer"></textarea>
+        </div>
+
+        <!-- Кнопка -->
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+                Ответить
+            </button>
+        </div>
+    </form>
+
+</div>
+{% endblock %}
