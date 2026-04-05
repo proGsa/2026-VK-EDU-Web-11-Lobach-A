@@ -1,0 +1,141 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block auth %}
+<img src="{% static 'img/avatar.jpg' %}" alt="avatar" height="70" class="rounded-circle">
+<div class="d-flex flex-column">
+    <span class="fw-bold">proGsa2026</span>
+    <div>
+        <a href="{% url 'profile' %}" class="text-decoration-none small me-2">Профиль</a>
+        <a href="{% url 'login' %}" class="text-decoration-none small text-danger">Выйти</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block left %}
+<div class="col-12 col-md-7 col-lg-8 d-flex flex-column gap-3">
+    <!-- Вопрос -->
+    <div class="qa-block p-3">
+        <div class="qa-avatar">
+            <img src="{% static question.author_avatar|default:'img/avatar1.png' %}" class="rounded-circle">
+            <div class="likes">
+                <button class="btn btn-sm btn-outline-success">+</button>
+                <span>{{ question.rating }}</span>
+                <button class="btn btn-sm btn-outline-danger">-</button>
+            </div>
+        </div>
+    
+        <div class="qa-content">
+            <h4 class="mb-3">
+                {{ question.title }}
+            </h4>
+    
+            <p>
+                {{ question.text|safe }}
+            </p>
+    
+            <div class="qa-bottom d-flex justify-content-between align-items-center mt-3">
+                <span class="text-muted small">{{ question.created_at }}</span>
+    
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-muted small tag-label">Тэги:</span>
+                    <div class="d-flex gap-2">
+                        {% for tag in question.tags %}
+                        <a href="{% url 'tag' tag %}" class="tag-link">{{ tag }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- Список ответов -->
+    <h5 class="mb-3">Ответы ({{ total_answers }})</h5>
+
+    {% for answer in answers %}
+    <div class="qa-block p-3">
+        <div class="qa-avatar">
+            <img src="{% static answer.author_avatar %}" class="rounded-circle">
+            <div class="likes">
+                <button class="btn btn-sm btn-outline-success">+</button>
+                <span>{{ answer.rating }}</span>
+                <button class="btn btn-sm btn-outline-danger">-</button>
+            </div>
+        </div>
+
+        <div class="qa-content">
+            <p>
+                {{ answer.text|safe }}
+            </p>
+            
+            {% if answer.code %}
+            <pre class="bg-light p-2 rounded small">
+                {{ answer.code }}
+            </pre>
+            {% endif %}
+            
+            {% if answer.list_items %}
+            <ul class="mb-2">
+                {% for item in answer.list_items %}
+                <li>{{ item|safe }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <div class="qa-bottom d-flex justify-content-between align-items-center mt-2">
+                <span class="text-muted small">{{ answer.created_at }}</span>
+                <button class="btn btn-sm btn-outline-success mark-btn {% if answer.is_correct %}active{% endif %}">
+                    <span class="checkmark">✔</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-info">Пока нет ответов. Будьте первым!</div>
+    {% endfor %}
+    
+    <!-- Пагинация для ответов -->
+    {% if answers.has_other_pages %}
+    <ul class="page-numbers">
+        {% if answers.has_previous %}
+        <li><a href="?page={{ answers.previous_page_number }}">&laquo;</a></li>
+        {% endif %}
+        
+        {% for num in answers.paginator.page_range %}
+            {% if answers.number == num %}
+            <li class="active"><span>{{ num }}</span></li>
+            {% elif num > answers.number|add:'-3' and num < answers.number|add:'3' %}
+            <li><a href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+        {% endfor %}
+        
+        {% if answers.has_next %}
+        <li><a href="?page={{ answers.next_page_number }}">&raquo;</a></li>
+        {% endif %}
+    </ul>
+    {% endif %}
+    
+    <hr class="my-4">
+
+    <h5 class="mb-3">Ваш ответ</h5>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <textarea name="text"
+                    class="form-control"
+                    rows="6"
+                    placeholder="Enter your answer"></textarea>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+                Ответить
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
