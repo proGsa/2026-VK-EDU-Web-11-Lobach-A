@@ -45,7 +45,7 @@
     {% for question in questions %}
     <div class="qa-block">
         <div class="qa-avatar">
-            <img src="{% static 'img/avatar' %}{{ forloop.counter|add:'0' }}.png" class="rounded-circle" onerror="this.src='{% static 'img/avatar1.png' %}'">
+            <img src="{% static 'img/avatar1.png' %}" class="rounded-circle"">
             <div class="likes">
                 <button class="btn btn-sm btn-outline-success">+</button>
                 <span>{{ question.rating }}</span>
