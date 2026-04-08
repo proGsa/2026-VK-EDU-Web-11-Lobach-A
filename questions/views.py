@@ -87,7 +87,7 @@ def question_view(request, question_id):
         }
     ]
     
-    page_obj = paginate(questions_list, request, per_page=5)
+    page_obj = paginate(answers_list, request, per_page=5)
     
     if request.method == 'POST':
         pass

@@ -22,16 +22,16 @@
     <!-- HEADER -->
     <header class="d-flex align-items-center py-3 mb-4 border-bottom">
         <!-- Левый блок: логотип -->
-        <div class="d-flex align-items-center gap-2 flex-shrink-0">
+        <a href="{% url 'index' %}" class="d-flex align-items-center gap-2flex-shrink-0">
             <img src="{% static 'img/qa.png' %}" height="40" alt="Логотип">
             <span class="logo-text">Questions&Answers</span>
-        </div>
+        </a>
     
         <!-- Центральный блок: поиск + кнопка Ask -->
         <div class="flex-grow-1 d-flex justify-content-center mx-3" style="max-width:800px;">
             <form class="d-flex w-100">
                 <input class="form-control me-2" type="search" placeholder="Поиск по заголовку и содержимому">
-                <a href="#" class="btn btn-primary">Задать вопрос</a>
+                <a href="{% url 'ask' %}" class="btn btn-primary">Задать вопрос</a>
             </form>
         </div>
     
@@ -74,16 +74,16 @@
                 <div class="p-3 popular-tags">
                     <p class="tag-title mb-2">Popular tags</p>
                     <p>
-                        <a href="#" class="tag tag-red">perl</a>
-                        <a href="#" class="tag tag-blue">python</a>
-                        <a href="#" class="tag tag-green">vk.ru</a>
-                        <a href="#" class="tag tag-yellow">iu7</a>
-                        <a href="#" class="tag tag-orange">mail.ru</a>
-                        <a href="#" class="tag tag-pink">javascript</a>
-                        <a href="#" class="tag tag-cyan">html5</a>
-                        <a href="#" class="tag tag-rubin">css3</a>
-                        <a href="#" class="tag tag-indigo">docker</a>
-                        <a href="#" class="tag tag-red">github.com</a>
+                        <a href="{% url 'tag' tag_name='perl' %}" class="tag tag-red">perl</a>
+                        <a href="{% url 'tag' tag_name='python' %}" class="tag tag-blue">python</a>
+                        <a href="{% url 'tag' tag_name='vk.ru' %}" class="tag tag-green">vk.ru</a>
+                        <a href="{% url 'tag' tag_name='iu7' %}" class="tag tag-yellow">iu7</a>
+                        <a href="{% url 'tag' tag_name='mail.ru' %}" class="tag tag-orange">mail.ru</a>
+                        <a href="{% url 'tag' tag_name='javascript' %}" class="tag tag-pink">javascript</a>
+                        <a href="{% url 'tag' tag_name='html5' %}" class="tag tag-cyan">html5</a>
+                        <a href="{% url 'tag' tag_name='css3' %}" class="tag tag-rubin">css3</a>
+                        <a href="{% url 'tag' tag_name='docker' %}" class="tag tag-indigo">docker</a>
+                        <a href="{% url 'tag' tag_name='github.com' %}" class="tag tag-red">github.com</a>
                     </p>
                 </div>
     
